@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fairlens"
+version = "0.1.0"
+description = "ML fairness auditing framework: AIF360 vs Fairlearn benchmarking, EU AI Act Annex III mapping, and the Metric Agreement Index (MAI)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Priyal Parmar" }]
+dependencies = [
+    "aif360>=0.6.0",
+    "fairlearn>=0.10.0",
+    "scikit-learn>=1.3.0",
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0.0", "pytest-cov"]
+
+[project.scripts]
+fairlens = "fairlens.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["fairlens*"]
