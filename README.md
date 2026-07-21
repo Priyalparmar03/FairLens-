@@ -137,6 +137,5 @@ and should be reviewed by qualified counsel before being relied on.
 Portfolio / research project. Metric Agreement Index write-up targeted
 for an arXiv (cs.LG) submission and FAccT 2027 submission.
 
-## License
-
-MIT
+Author 
+Priyal Parmar 
