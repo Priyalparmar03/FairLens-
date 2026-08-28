@@ -1,37 +1,15 @@
-"""
-Canonical fairness metric registry.
-
-AIF360 and Fairlearn implement overlapping but differently-named fairness
-metrics. This module defines a canonical vocabulary so that, e.g.,
-AIF360's `statistical_parity_difference` and Fairlearn's
-`demographic_parity_difference` are recognized as the *same* underlying
-notion, computed by two independent implementations -- which is exactly
-what FairLens needs to compare (that comparison is the "AIF360 vs
-Fairlearn benchmark" part of the project) and what the Metric Agreement
-Index consumes.
-
-Each canonical metric carries:
-  - `ideal`: the value a perfectly fair model would score
-  - `kind`: "difference" (symmetric around 0) or "ratio" (symmetric
-    around 1, e.g. disparate impact)
-  - `threshold`: the deviation from `ideal` still considered "fair"
-    (defaults follow common practice: the 80% rule for ratios, a 0.1
-    absolute gap for differences -- both configurable by the caller)
-  - which library/libraries can compute it
-"""
 from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import Literal
 
 
 @dataclass(frozen=True)
 class MetricSpec:
-    key: str                       # canonical key
+    key: str                       
     display_name: str
     kind: Literal["difference", "ratio"]
     ideal: float
-    default_threshold: float       # allowed deviation from `ideal`
+    default_threshold: float       
     aif360_name: str | None
     fairlearn_name: str | None
     description: str
@@ -40,9 +18,6 @@ class MetricSpec:
         t = self.default_threshold if threshold is None else threshold
         if self.kind == "difference":
             return abs(value - self.ideal) <= t
-        # ratio metric: fair if within [ideal - band, ideal + band] using
-        # multiplicative band around 1.0, expressed via threshold as the
-        # minimum acceptable ratio (e.g. 0.8 -> band is [0.8, 1/0.8])
         lower = t
         upper = 1.0 / t if t > 0 else float("inf")
         return lower <= value <= upper
@@ -116,7 +91,7 @@ REGISTRY: dict[str, MetricSpec] = {
         ideal=0.0,
         default_threshold=0.10,
         aif360_name="theil_index",
-        fairlearn_name=None,  # no Fairlearn equivalent
+        fairlearn_name=None,  
         description=(
             "Generalized entropy index of individual (not group) fairness "
             "in the benefit distribution. AIF360-only; included for "
