@@ -9,8 +9,7 @@ def sample_dataframe():
         "prediction": [1, 0, 1, 1, 0, 0],
         "sex": ["M", "F", "M", "F", "M", "F"],
     })
-
-
+    
 @pytest.fixture
 def dataset_info():
     return {
