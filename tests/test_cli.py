@@ -20,7 +20,5 @@ def test_parser():
     ])
 
     assert args.command == "audit"
-
     assert args.target == "income"
-
     assert args.protected == "sex"
