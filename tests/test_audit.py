@@ -1,6 +1,5 @@
 import numpy as np
 import pytest
-
 from fairlens.datasets import load_synthetic
 from fairlens.audit import FairnessAudit
 from fairlens.mai.index import MetricAgreementIndex, MetricEvaluation
@@ -9,8 +8,6 @@ from fairlens.metrics.common import REGISTRY
 
 
 def _predict_from_true_label_with_flip(dataset, flip_rate=0.0, seed=0):
-    """Cheap stand-in 'model': true label with some noise, so metrics
-    have something non-trivial to compute over."""
     rng = np.random.RandomState(seed)
     y = dataset.df[dataset.label_name].to_numpy().copy()
     flip_mask = rng.rand(len(y)) < flip_rate
@@ -39,7 +36,6 @@ class TestFairnessAudit:
     def test_full_audit_runs_on_synthetic_low_bias(self):
         ds = load_synthetic(n_samples=2000, bias_strength=0.0, random_state=2)
         y_pred = _predict_from_true_label_with_flip(ds, flip_rate=0.05)
-
         audit = FairnessAudit()
         result = audit.run(ds, y_pred, use_case_description="loan approval credit scoring")
 
@@ -52,10 +48,8 @@ class TestFairnessAudit:
     def test_high_bias_dataset_flags_more_unfair_metrics_than_low_bias(self):
         ds_low = load_synthetic(n_samples=3000, bias_strength=0.0, random_state=3)
         ds_high = load_synthetic(n_samples=3000, bias_strength=1.0, random_state=3)
-
         y_low = _predict_from_true_label_with_flip(ds_low, flip_rate=0.02)
         y_high = _predict_from_true_label_with_flip(ds_high, flip_rate=0.02)
-
         audit = FairnessAudit()
         r_low = audit.run(ds_low, y_low)
         r_high = audit.run(ds_high, y_high)
