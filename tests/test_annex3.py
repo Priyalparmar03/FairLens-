@@ -4,9 +4,7 @@ from fairlens.annex3 import (
 
 
 def test_high_risk():
-
     classifier = Annex3Classifier()
-
     result = classifier.classify(
         "AI system used for recruitment."
     )
@@ -15,11 +13,8 @@ def test_high_risk():
 
 
 def test_non_high_risk():
-
     classifier = Annex3Classifier()
-
     result = classifier.classify(
         "Movie recommendation system."
     )
-
     assert result["high_risk"] is False
